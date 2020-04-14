@@ -47,13 +47,15 @@ class CurrentLayout(base._TextBox):
 
     def _configure(self, qtile, bar):
         base._TextBox._configure(self, qtile, bar)
-        self.text = self.bar.screen.group.layouts[0].name
+        layout = self.bar.screen.group.layouts[0].name
+        self.text = self.fmt.format(layout=layout)
         self.setup_hooks()
 
     def setup_hooks(self):
         def hook_response(layout, group):
             if group.screen is not None and group.screen == self.bar.screen:
-                self.text = layout.name
+                layout = layout.name
+                self.text = self.fmt.format(layout=layout)
                 self.bar.draw()
         hook.subscribe.layout_change(hook_response)
 
